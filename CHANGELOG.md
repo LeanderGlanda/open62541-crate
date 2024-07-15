@@ -19,6 +19,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add `ua::NodeId::null`.
 - Change visibility of `NodeContext` to be public
 - Add generic `Server.addNode()` method and `Node` struct
+- Add type `ua::BrowsePath`.
+- Add type `ua::BrowsePathResult`.
+- Add type `ua::BrowsePathTarget`.
 
 ### Changed
 

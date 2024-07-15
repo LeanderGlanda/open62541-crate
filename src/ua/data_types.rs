@@ -8,6 +8,9 @@ mod browse_description;
 mod browse_direction;
 mod browse_next_request;
 mod browse_next_response;
+mod browse_path;
+mod browse_path_result;
+mod browse_path_target;
 mod browse_request;
 mod browse_response;
 mod browse_result;
@@ -57,6 +60,9 @@ pub use self::{
     browse_direction::BrowseDirection,
     browse_next_request::BrowseNextRequest,
     browse_next_response::BrowseNextResponse,
+    browse_path::BrowsePath,
+    browse_path_result::BrowsePathResult,
+    browse_path_target::BrowsePathTarget,
     browse_request::BrowseRequest,
     browse_response::BrowseResponse,
     browse_result::BrowseResult,
