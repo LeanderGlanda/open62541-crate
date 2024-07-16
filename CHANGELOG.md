@@ -18,6 +18,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `ua::ReferenceTypeAttributes`, `ua::DataTypeAttributes`, `ua::ViewAttributes`.
 - Add `ua::NodeId::null`.
 - Change visibility of `NodeContext` to be public
+- Add generic `Server.addNode()` method and `Node` struct
 
 ### Changed
 
