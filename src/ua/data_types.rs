@@ -43,6 +43,7 @@ mod read_request;
 mod read_response;
 mod read_value_id;
 mod reference_description;
+mod relative_path_element;
 mod status_code;
 mod string;
 mod timestamps_to_return;
@@ -86,10 +87,10 @@ pub use self::{
     localized_text::LocalizedText,
     monitored_item_create_request::MonitoredItemCreateRequest,
     monitored_item_create_result::MonitoredItemCreateResult,
+    node_attributes::NodeAttributes,
     node_attributes::{
-        DataTypeAttributes, MethodAttributes, NodeAttributes, ObjectAttributes,
-        ObjectTypeAttributes, ReferenceTypeAttributes, VariableAttributes, VariableTypeAttributes,
-        ViewAttributes,
+        DataTypeAttributes, MethodAttributes, ObjectAttributes, ObjectTypeAttributes,
+        ReferenceTypeAttributes, VariableAttributes, VariableTypeAttributes, ViewAttributes,
     },
     node_class::NodeClass,
     node_id::NodeId,
@@ -99,6 +100,7 @@ pub use self::{
     read_response::ReadResponse,
     read_value_id::ReadValueId,
     reference_description::ReferenceDescription,
+    relative_path_element::RelativePathElement,
     status_code::StatusCode,
     string::String,
     timestamps_to_return::TimestampsToReturn,

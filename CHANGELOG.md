@@ -22,6 +22,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add type `ua::BrowsePath`.
 - Add type `ua::BrowsePathResult`.
 - Add type `ua::BrowsePathTarget`.
+- Add type `ua::RelativePathElement`.
 
 ### Changed
 
