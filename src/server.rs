@@ -7,8 +7,9 @@ use std::{ffi::c_void, ptr, sync::Arc};
 
 use open62541_sys::{
     UA_NodeId, UA_NodeTypeLifecycle, UA_Server, UA_ServerConfig,
-    UA_Server_addDataSourceVariableNode, UA_Server_deleteNode, UA_Server_runUntilInterrupt,
-    UA_Server_setNodeTypeLifecycle, __UA_Server_addNode, __UA_Server_write,
+    UA_Server_addDataSourceVariableNode, UA_Server_addReference, UA_Server_deleteNode,
+    UA_Server_runUntilInterrupt, UA_Server_setNodeTypeLifecycle, __UA_Server_addNode,
+    __UA_Server_write,
 };
 
 use crate::{
@@ -186,6 +187,36 @@ impl Server {
                 lifecycle,
             )
         };
+    }
+
+    /// # Errors
+    ///
+    /// Will return `Err` when the `status_code` of `UA_Server_addReference` call isn't `GOOD`.
+    pub fn add_reference(
+        &self,
+        source_id: &ua::NodeId,
+        reference_type_id: &ua::NodeId,
+        target_id: &ua::ExpandedNodeId,
+        is_forward: bool,
+    ) -> Result<()> {
+        let status_code = ua::StatusCode::new(unsafe {
+            // SAFETY: This function takes the structs by value. An investiagtion in the open62541 source
+            // found that the heap allocated fields of NodeId (like String) are not used or referenced.
+            // This means the C code forgets about all the values passed here and just uses them
+            // to find internal data and uses that to change internal states.
+            // Conclusion: We can safely give access to our Rust memory and we must not pass ownership
+            // as the C code doesn't take it. (otherwise a memory leak would arise)
+            // This may be wrong, so if you are debugging corrupt memory reads of nodeId or expandedNodeId
+            // the problem could lie here.
+            UA_Server_addReference(
+                self.0.as_ptr().cast_mut(),
+                DataType::to_raw_copy(source_id),
+                DataType::to_raw_copy(reference_type_id),
+                DataType::to_raw_copy(target_id),
+                is_forward,
+            )
+        });
+        Error::verify_good(&status_code)
     }
 
     /// Adds node to address space.
