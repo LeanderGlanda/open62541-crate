@@ -1,12 +1,14 @@
 mod data_source;
 mod node_context;
+mod node_type_lifecycle;
 mod node_types;
 
 use std::{ffi::c_void, ptr, sync::Arc};
 
 use open62541_sys::{
-    UA_NodeId, UA_Server, UA_ServerConfig, UA_Server_addDataSourceVariableNode,
-    UA_Server_deleteNode, UA_Server_runUntilInterrupt, __UA_Server_addNode, __UA_Server_write,
+    UA_NodeId, UA_NodeTypeLifecycle, UA_Server, UA_ServerConfig,
+    UA_Server_addDataSourceVariableNode, UA_Server_deleteNode, UA_Server_runUntilInterrupt,
+    UA_Server_setNodeTypeLifecycle, __UA_Server_addNode, __UA_Server_write,
 };
 
 use crate::{
@@ -14,13 +16,14 @@ use crate::{
     Attributes, DataType, Error, Result,
 };
 
-pub(crate) use self::node_context::NodeContext;
+pub use self::node_context::NodeContext;
 pub use self::{
     data_source::{
         DataSource, DataSourceError, DataSourceReadContext, DataSourceResult,
         DataSourceWriteContext,
     },
-    node_types::{ObjectNode, VariableNode},
+    node_type_lifecycle::{Lifecycle, NodeTypeLifecycle},
+    node_types::{Node, ObjectNode, VariableNode},
 };
 
 /// Builder for [`Server`].
@@ -173,6 +176,16 @@ impl Server {
                 browse_path.as_ptr(),
             ))
         }
+    }
+
+    pub fn set_node_type_lifecycle(&self, node_id: &ua::NodeId, lifecycle: UA_NodeTypeLifecycle) {
+        unsafe {
+            UA_Server_setNodeTypeLifecycle(
+                self.0.as_ptr().cast_mut(),
+                DataType::to_raw_copy(node_id),
+                lifecycle,
+            )
+        };
     }
 
     /// Adds node to address space.
